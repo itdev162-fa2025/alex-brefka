@@ -40,5 +40,32 @@ namespace API.Controllers
 
             return Ok(post);
         }
+
+        /// <summary>
+        /// POST api/post
+        /// </summary>
+        /// <param name="request">JSON request containing post fields</param>
+        /// <return>A new post</return>
+        [HttpPost(Name = "Create")]
+        public ActionResult<Post> Create([FromBody] Post request)
+        {
+            var post = new Post
+            {
+                Id = request.Id,
+                Title = request.Title,
+                Body = request.Body,
+                Date = request.Date
+            };
+
+            _context.Posts.Add(post);
+            var success = _context.SaveChanges() > 0;
+
+            if (success)
+            {
+                return Ok(post);
+            }
+
+            throw new Exception("Error creating post");
+        }
     }
 }
